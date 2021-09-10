@@ -10,6 +10,7 @@ class JwtTool
     {
         $nowtime = time();
         $key = "admin_vue_wei";
+        //payload：有效数据
         $payload = array(
             "iss" => "http://www.admin-vue-api.com",//签发者
             "aud" => "http://www.admin-vue-api.com",//jwt面向的用户

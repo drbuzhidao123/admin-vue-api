@@ -3,19 +3,19 @@
 namespace app\index\controller;
 use app\BaseController;
 use app\common\model\User;
+use app\common\controller\JwtTool;
 
 class Login extends BaseController
 {
     public function check()
     {
-        $username = request()->param('username');
+        $userName = request()->param('userName');
         $password = request()->param('password');
-        if(empty($username)||empty($password)){
+        if(empty($userName)||empty($password)){
             return show(config('status.error'),'用户名或密码为空',null);
         }
-        
         $userObj = new User();
-        $user=$userObj->getUserByusername($username); 
+        $user=$userObj->getUserByuserName($userName);
         if(empty($user)){
             return show(config('status.error'),'没有该用户',null);
         }
@@ -34,7 +34,7 @@ class Login extends BaseController
         $token = makeToken();
         $token_out = strtotime("+7 days");
         $userinfo = ['token_out' => $token_out,'token' => $token];
-        $res = $userObj->updateUserByusername($username,$userinfo);
+        $res = $userObj->updateUserByuserName($userName,$userinfo);
         if($res){
             return show(config('status.success'),'登录成功！',$res);
         }else{

@@ -10,9 +10,7 @@ class Login extends BaseController
     {
         $userName = request()->param('userName');
         $password = request()->param('password');
-        $jwtTool = new JwtTool();
-        $jwt = $jwtTool->makeJwt($userName);
-        \var_dump($jwt);exit();
+        return show(config('status.error'),'dev',null);
         if(empty($userName)||empty($password)){
             return show(config('status.error'),'用户名或密码为空',null);
         }
