@@ -3,7 +3,6 @@
 namespace app\index\controller;
 use app\BaseController;
 use app\common\model\User;
-use app\common\controller\JwtTool;
 
 class Login extends BaseController
 {
