@@ -10,10 +10,10 @@ class Login extends BaseController
     {
         $userName = request()->param('userName');
         $password = request()->param('password');
-        return show(config('status.error'),'dev',null);
         if(empty($userName)||empty($password)){
             return show(config('status.error'),'用户名或密码为空',null);
         }
+        
         
         $userObj = new user();
         $user=$userObj->getUserByuserName($userName);
@@ -32,9 +32,11 @@ class Login extends BaseController
         }
 
         //正确之后用jwt签出token保存状态
-        $token = makeToken();
-        if($res){
-            return show(config('status.success'),'登录成功！',$res);
+        $jwtTool = new JwtTool();
+        $token = $jwtTool->makeJwt($userName);
+        if($token){
+            $user['token'] = $token;
+            return show(config('status.success'),'登录成功！',$user);
         }else{
             return show(config('status.error'),'登录失败！token更新出错！',null);
         }
