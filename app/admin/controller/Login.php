@@ -33,7 +33,7 @@ class Login extends BaseController
 
         //正确之后用jwt签出token保存状态
         $jwtTool = new JwtTool();
-        $token = $jwtTool->makeJwt($userName);
+        $token = $jwtTool->makeJwt($userName,$jwtTool->key);
         if($token){
             $user['token'] = $token;
             return show(config('status.success'),'登录成功！',$user);

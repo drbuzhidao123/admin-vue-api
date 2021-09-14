@@ -7,11 +7,6 @@ use think\facade\Db;
 class User extends Model
 {
 
-   /*public function AuthGroupAccess()
-{
-    return $this->hasOne(AuthGroupAccess::class,'uid');
-}*/
-
     public function getUserById($id)
     {
         if(empty($id)){
@@ -61,39 +56,6 @@ class User extends Model
        }
        return $res;
     }
-
-    //获取数据列表
-    /*public function getUserList($pagenum,$pagesize,$query)
-    {
-        if(empty($pagenum)&&empty($pagesize)){
-             return false;
-        }
-        if(empty($query)){
-            $res = Db::table('admin')->alias('u')
-        ->leftJoin('auth_group_access a','u.id = a.uid')
-        ->leftJoin('auth_group g','a.group_id = g.id')
-        ->field('u.id,u.userName,u.password,u.status,u.created,u.updated,u.logined,u.token,u.token_out,u.mobile,a.group_id,g.title')
-        ->limit(($pagenum-1)*$pagesize,$pagesize)
-        ->field('')
-        ->select();
-        //$res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select();
-        }else{
-            $where=[
-                'userName'=>$query
-            ];
-            $res = Db::table('admin')->alias('u')
-            ->where($where)
-            ->leftJoin('auth_group_access a','u.id = a.uid')
-            ->leftJoin('auth_group g','a.group_id = g.id')
-            ->field('u.id,u.userName,u.password,u.status,u.created,u.updated,u.logined,u.token,u.token_out,u.mobile,a.group_id,g.title')
-            ->limit(($pagenum-1)*$pagesize,$pagesize)
-            ->select();
-        //$res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select();
-        };
-        return $res;
-    }*/
-
-
 
     public function getUserTotal($query)
     { 
@@ -150,20 +112,5 @@ class User extends Model
         return $res;
         
     }
-
     
-
-    /*public function add($userform)
-    {
-        if(empty($userform)){
-         return false;
-        }
-
-        $res = $this->create($userform);
-        return $res;
-        
-    }*/
-
-    
-
 }

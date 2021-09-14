@@ -4,12 +4,12 @@ namespace app\common\controller;
 
 use Firebase\JWT\JWT;
 
-class JwtTool
+class JwtTool extends JWT
 {
-    public function makeJwt($userName)
+    public $key = "1gHuiop975cdashyex9Ud23ldsvm2Xq";
+    public function makeJwt($userName,$key)
     {
         $nowtime = time();
-        $key = "admin_vue_wei";
         //payload：有效数据
         $payload = array(
             "iss" => "http://www.admin-vue-api.com",//签发者
@@ -24,4 +24,5 @@ class JwtTool
         $jwt = JWT::encode($payload,$key);
         return $jwt;
     }
+    
 }
