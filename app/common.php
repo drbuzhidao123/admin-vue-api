@@ -3,10 +3,12 @@
 
 function show($code, $msg = 'error', $data = [], $httpStatus = 200)
 {
+      $key = "HkPIucnOnw8SXXLx";
+      $data = base64_encode(openssl_encrypt(json_encode($data), 'AES-128-ECB', $key, OPENSSL_RAW_DATA));
       $result = [
             'code' => $code,
-            'data' => $data,
             'msg' => $msg,
+            'data' => $data,
       ];
       return json($result, $httpStatus);
 }

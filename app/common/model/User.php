@@ -2,10 +2,28 @@
 namespace app\common\model;
 
 use think\Model;
-use think\facade\Db;
 
 class User extends Model
 {
+
+    public function getUserList($pagenum,$pagesize,$query)
+    {
+        if(empty($pagenum)&&empty($pagesize)){
+             return false;
+        }
+
+        if(empty($query)){
+        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        }else{
+            $where=[
+                'title'=>$query
+            ];
+        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        }
+
+        return $res;
+       
+    }
 
     public function getUserById($id)
     {

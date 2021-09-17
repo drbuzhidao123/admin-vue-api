@@ -5,6 +5,36 @@ use think\Model;
 
 class Role extends Model
 {
+    public function User()
+    {
+        return $this->hasMany(User::class,'role');
+    }
+
+    public function getRoleList($pagenum,$pagesize,$query)
+    {
+        if(empty($pagenum)&&empty($pagesize)){
+             return false;
+        }
+
+        if(empty($query)){
+        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        }else{
+            $where=[
+                'title'=>$query
+            ];
+        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        }
+
+        return $res;
+       
+    }
+
+    public function getRoleByUserId($userId)
+    {
+        $where = User::where('id',$userId);
+        $role = Role::hasWhere("User",$where)->find();
+        return $role;
+    }
 
     public function getRoleById($id)
     {

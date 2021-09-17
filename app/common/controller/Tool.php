@@ -3,11 +3,11 @@ namespace app\common\controller;
 
 class Tool 
 {
-    public function tree($arr,$pid)
+    public function tree($arr,$parentId)
     {
         $tree = [];
         foreach($arr as $key=>$val) {
-            if($val['pid'] == $pid) {
+            if($val['parentId'] == $parentId) {
                 if(!empty($this->tree($arr,$val['id']))){
                     $val['children'] = $this->tree($arr,$val['id']);   
                 }

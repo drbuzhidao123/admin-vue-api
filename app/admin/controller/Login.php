@@ -3,17 +3,17 @@ namespace app\admin\controller;
 use app\BaseController;
 use app\common\model\user;
 use app\common\controller\JwtTool;
+use think\Request;
 
 class Login extends BaseController
 {
-    public function check()
+    public function check(Request $request)
     {
-        $userName = request()->param('userName');
-        $password = request()->param('password');
+        $userName = $request->param->userName;
+        $password = $request->param->password;
         if(empty($userName)||empty($password)){
             return show(config('status.error'),'用户名或密码为空',null);
         }
-        
         
         $userObj = new user();
         $user=$userObj->getUserByuserName($userName);

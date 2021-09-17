@@ -3,19 +3,18 @@ namespace app\admin\controller;
 
 use app\admin\controller\Base;
 use app\common\model\User as ModelUser;
-use think\facade\Request;
+use think\Request;
 
 class User extends Base
 {
-    public function getUserList()
+    public function getUserList(Request $request)
     {
-        $pagenum =  \trim(request()->param('pagenum'));
-        $pagesize = \trim(request()->param('pagesize'));
-        $query = \trim(request()->param('query'));
+        $pagenum =  trim($request->param->pagenum);
+        $pagesize = trim($request->param->pagesize);
+        $query = trim($request->param->query);
         if (empty($pagenum) || empty($pagesize)) {
-            return \show(config('status.error'), '传输数据为空', null);
+            return show(config('status.error'), '传输数据为空', null);
         }
-
         $userObj = new ModelUser();
         $userList = $userObj->getUserList($pagenum, $pagesize, $query)->toArray();
         $Total = $userObj->getUserTotal($query);
@@ -29,12 +28,12 @@ class User extends Base
 
     public function getUser()
     {
-        $id =  \trim(request()->param('id'));
-        if (empty($id)) {
+        $userId =  \trim(request()->param('userId'));
+        if (empty($userId)) {
             return \show(config('status.error'), '传输数据为空', null);
         }
         $userObj = new ModelUser();
-        $res =$userObj->getUserById($id)->toArray();
+        $res =$userObj->getUserById($userId)->toArray();
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
         }
@@ -43,10 +42,10 @@ class User extends Base
 
     public function changeStatus()
     {
-        $userid = trim(request()->param('userid'));
+        $userId = trim(request()->param('userId'));
         $status = trim(request()->param('status'));
         $userObj = new ModelUser();
-        $res = $userObj->updateStatusByid($userid, $status); //返回0或1
+        $res = $userObj->updateStatusByid($userId, $status); //返回0或1
         if (!$res || empty($res)) {
             return show(config('status.error'), '更新失败', $res);
         }
@@ -54,11 +53,11 @@ class User extends Base
     }
 
 
-    public function add()
+    public function addUser(Request $request)
     {
-        $user = Request::param();
+        $user = $request->param;
         $userObj = new ModelUser();
-        $user['password'] = passwordMd5($user['password']);
+        $user->password = passwordMd5($user->password);
         $res = $userObj->save($user); //返回boolse值
         if (!$res) {
             return show(config('status.error'), '更新失败', $res);
@@ -79,9 +78,9 @@ class User extends Base
 
     public function remove()
     {
-        $id = Request::param('id');
+        $userId = Request::param('userId');
         $userObj = new ModelUser();
-        $res = $userObj->delete($id);//单个或批量删除
+        $res = $userObj->delete($userId);//单个或批量删除
         if (empty($res)) {
             return show(config('status.error'), '删除失败', $res);
         }

@@ -16,10 +16,10 @@ class Role extends Base
             return \show(config('status.error'), '传输数据为空', null);
         }
 
-        $RoleObj = new ModelRole();
-        $RoleList = $RoleObj->getRoleList($pagenum, $pagesize, $query)->toArray();
-        $Total = $RoleObj->getRoleTotal($query);
-        $res["list"] = $RoleList;
+        $roleObj = new ModelRole();
+        $roleList = $roleObj->getRoleList($pagenum, $pagesize, $query)->toArray();
+        $Total = $roleObj->getRoleTotal($query);
+        $res["list"] = $roleList;
         $res["total"] = $Total;
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
@@ -29,12 +29,12 @@ class Role extends Base
 
     public function getRole()
     {
-        $id =  \trim(request()->param('id'));
-        if (empty($id)) {
+        $roleId =  \trim(request()->param('roleId'));
+        if (empty($roleId)) {
             return \show(config('status.error'), '传输数据为空', null);
         }
-        $RoleObj = new ModelRole();
-        $res =$RoleObj->getRoleById($id)->toArray();
+        $roleObj = new ModelRole();
+        $res =$roleObj->getRoleById($roleId)->toArray();
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
         }
@@ -43,10 +43,10 @@ class Role extends Base
 
     public function changeStatus()
     {
-        $Roleid = trim(request()->param('Roleid'));
+        $roleId = trim(request()->param('roleId'));
         $status = trim(request()->param('status'));
-        $RoleObj = new ModelRole();
-        $res = $RoleObj->updateStatusByid($Roleid, $status); //返回0或1
+        $roleObj = new ModelRole();
+        $res = $roleObj->updateStatusByid($roleId, $status); //返回0或1
         if (!$res || empty($res)) {
             return show(config('status.error'), '更新失败', $res);
         }
@@ -56,10 +56,10 @@ class Role extends Base
 
     public function add()
     {
-        $Role = Request::param();
-        $RoleObj = new ModelRole();
-        $Role['password'] = passwordMd5($Role['password']);
-        $res = $RoleObj->save($Role); //返回boolse值
+        $role = Request::param();
+        $roleObj = new ModelRole();
+        $role['password'] = passwordMd5($role['password']);
+        $res = $roleObj->save($role); //返回boolse值
         if (!$res) {
             return show(config('status.error'), '更新失败', $res);
         }
@@ -68,9 +68,9 @@ class Role extends Base
 
     public function edit()
     {
-        $Role = Request::param();
-        $RoleObj = new ModelRole();
-        $res = $RoleObj->updateById($Role['id'], $Role);
+        $role = Request::param();
+        $roleObj = new ModelRole();
+        $res = $roleObj->updateById($role['id'], $role);
         if (!$res) {
             return show(config('status.error'), '更新失败', $res);
         }
@@ -79,9 +79,9 @@ class Role extends Base
 
     public function remove()
     {
-        $id = Request::param('id');
-        $RoleObj = new ModelRole();
-        $res = $RoleObj->delete($id);//单个或批量删除
+        $roleId = Request::param('roleId');
+        $roleObj = new ModelRole();
+        $res = $roleObj->delete($roleId);//单个或批量删除
         if (empty($res)) {
             return show(config('status.error'), '删除失败', $res);
         }
