@@ -26,6 +26,16 @@ class User extends Base
         return show(config('status.success'), '查询数据成功', $res);
     }
 
+    public function getAllUserList()
+    {
+        $userObj = new ModelUser();
+        $res = $userObj->select()->toArray();
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
+    }
+
     public function getUser()
     {
         $userId =  \trim(request()->param('userId'));

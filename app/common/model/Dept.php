@@ -5,23 +5,18 @@ use think\Model;
 
 class Dept extends Model
 {
-    public function getDeptList($pagenum,$pagesize,$query)
+    public function getDeptList($query)
     {
-        if(empty($pagenum)&&empty($pagesize)){
-             return false;
-        }
-
         if(empty($query)){
-        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        $res = $this->select();
         }else{
             $where=[
                 'title'=>$query
             ];
-        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        $res = $this->where($where)->find();
         }
 
         return $res;
-       
     }
 
     public function getDeptById($id)
