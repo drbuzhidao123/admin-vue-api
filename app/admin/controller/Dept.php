@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use app\admin\controller\Base;
+use app\common\controller\Tool;
 use app\common\model\dept as ModelDept;
 use think\Request;
 
@@ -9,10 +10,15 @@ class Dept extends Base
 {
     public function getDeptList(Request $request)
     {
-        return show(config('status.success'), '更新成功', $request->param("data"));
-        $query = trim($request->param->query);
+        $dept = (array)($request->param);
         $deptObj = new ModelDept();
-        $deptList = $deptObj->getDeptList($query)->toArray();
+        if(!$dept['query']){
+            $tool = new Tool();
+            $deptList = $deptObj->select()->toArray();
+            $deptList=$tool->tree($deptList,1);
+        }else{
+            $deptList = $deptObj->getDeptByDeptName($dept['query'])->toArray();
+        }
         $res = $deptList;
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
@@ -22,7 +28,9 @@ class Dept extends Base
 
     public function addDept(Request $request)
     {
-        $dept = $request->param;
+        $request->param->createTime = date('Y-m-d h:i:s', time());
+        $request->param->updateTime = date('Y-m-d h:i:s', time());
+        $dept = (array)($request->param);
         $deptObj = new ModelDept();
         $res = $deptObj->save($dept);
         if (!$res) {
@@ -31,9 +39,9 @@ class Dept extends Base
         return show(config('status.success'), '更新成功', $res);
     }
 
-    public function editDept()
+    public function editDept(Request $request)
     {
-        $dept = Request::param();
+        $dept = (array)($request->param);
         $deptObj = new ModelDept();
         $res = $deptObj->updateById($dept['id'], $dept);
         if (!$res) {
@@ -42,11 +50,11 @@ class Dept extends Base
         return show(config('status.success'), '更新成功', $res);
     }
 
-    public function delDept()
+    public function delDept(Request $request)
     {
-        $id = Request::param('id');
+        $dept = (array)($request->param);
         $deptObj = new ModelDept();
-        $res = $deptObj->delete($id);//单个或批量删除
+        $res = $deptObj::destroy($dept['id']);//单个删除
         if (empty($res)) {
             return show(config('status.error'), '删除失败', $res);
         }

@@ -5,20 +5,6 @@ use think\Model;
 
 class Dept extends Model
 {
-    public function getDeptList($query)
-    {
-        if(empty($query)){
-        $res = $this->select();
-        }else{
-            $where=[
-                'title'=>$query
-            ];
-        $res = $this->where($where)->find();
-        }
-
-        return $res;
-    }
-
     public function getDeptById($id)
     {
         if(empty($id)){
@@ -35,14 +21,14 @@ class Dept extends Model
        
     }
 
-    public function getDeptByDeptName($DeptName)
+    public function getDeptByDeptName($deptName)
     {
-        if(empty($DeptName)){
+        if(empty($deptName)){
              return false;
         }
 
         $where = [
-            'DeptName' => $DeptName
+            'deptName' => $deptName
         ];
 
         $res = $this->where($where)->find();
@@ -51,13 +37,13 @@ class Dept extends Model
        
     }
 
-    public function updateDeptByDeptName($DeptName,$info){
-        if(empty($DeptName)){
+    public function updateDeptByDeptName($deptName,$info){
+        if(empty($deptName)){
             return false;
        }
 
        $where = [
-        'DeptName' => $DeptName
+        'deptName' => $deptName
     ];
 
        $res = $this->where($where)->update($info);
@@ -75,52 +61,47 @@ class Dept extends Model
             $res = $this->select()->count();
             }else{
                 $where=[
-                    'DeptName'=>$query
+                    'deptName'=>$query
                 ];
             $res = $this->where($where)->select()->count();
             }
         return $res;
     }
 
-    public function updateStatusById($Deptid,$status)
+    public function updateStatusById($deptid,$status)
     {
-        if(empty($Deptid)){
+        if(empty($deptid)){
          return false;
         }
 
         $where = [
-            'id' => $Deptid
+            'id' => $deptid
         ];
 
-        $Dept = $this->where($where)->find();
-        $Dept->status = $status; 
-        $res = $Dept->save();
+        $deptData = $this->where($where)->find();
+        $deptData->status = $status; 
+        $res = $deptData->save();
         return $res;
         
     }
 
-    public function updateById($Deptid,$Dept)
+    public function updateById($deptid,$dept)
     {
-        if(empty($Deptid)){
+        if(empty($deptid)){
          return false;
         }
 
         $where = [
-            'id' => $Deptid
+            'id' => $deptid
         ];
-        $admin=$this->where($where)->find();
-        if($Dept['password']==''){ 
-           $admin->DeptName=$Dept['DeptName'];
-           $admin->updated=date("Y-m-d h:i:s",time());
-           $admin->mobile=$Dept['mobile'];
-        }else{
-            $admin->DeptName=$Dept['DeptName'];
-            $admin->password=\passwordMd5($Dept['password']);
-            $admin->updated=date("Y-m-d h:i:s",time());
-            $admin->mobile=$Dept['mobile'];
-        }
-
-        $res = $admin->save();
+        $deptData=$this->where($where)->find();
+           $deptData->parentId=$dept['parentId'];
+           $deptData->userId=$dept['userId'];
+           $deptData->deptName=$dept['deptName'];
+           $deptData->userName=$dept['userName'];
+           $deptData->userEmail=$dept['userEmail'];
+           $deptData->updateTime=date("Y-m-d h:i:s",time());
+        $res = $deptData->save();
         return $res;
         
     }

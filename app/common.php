@@ -4,7 +4,8 @@
 function show($code, $msg = 'error', $data = [], $httpStatus = 200)
 {
       $key = "HkPIucnOnw8SXXLx";
-      $data = base64_encode(openssl_encrypt(json_encode($data), 'AES-128-ECB', $key, OPENSSL_RAW_DATA));
+      $iv = 'ABCDEF1234123412';
+      $data = base64_encode(openssl_encrypt(json_encode($data), 'AES-128-CBC', $key, OPENSSL_RAW_DATA,$iv));
       $result = [
             'code' => $code,
             'msg' => $msg,
