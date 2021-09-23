@@ -1,32 +1,52 @@
 <?php
+
 namespace app\common\controller;
 
-class Tool 
+class Tool
 {
-    public function tree($arr,$parentId)
+    public function tree0($arr, $parentId)
     {
         $tree = [];
-        foreach($arr as $key=>$val) {
-            if($val['parentId'] == $parentId) {
-                if(!empty($this->tree($arr,$val['id']))){
-                    $val['children'] = $this->tree($arr,$val['id']);   
+        foreach ($arr as $key => $val) {
+            if ($val['parentId'] == $parentId) {
+                if (!empty($this->tree($arr, $val['id']))) {
+                    $val['children'] = $this->tree0($arr, $val['id']);
                 }
                 $tree[] = $val;
-                //$tree = \array_merge($tree,$this->tree($arr, $val['id']));
             }
         }
         return $tree;
     }
 
-    public function editTree($arr,$pid,$id)
+    public function tree($arr, $parentId="")
     {
         $tree = [];
-        foreach($arr as $key=>$val) {
-            if($val['pid'] == $pid) {
-                if($val['id']==$id){
+        foreach ($arr as $key => $val) {
+            if ($val['parentId'] == $parentId) {
+                if($val['parentId']==''){
+                    $parentIdList = $val['id'];
                 }else{
-                    if(!empty($this->editTree($arr,$val['id'],$id))){
-                        $val['children'] = $this->tree($arr,$val['id']);   
+                    $parentIdList = $val['parentId'].','.$val['id'];
+                }
+                $val['parentId'] = array_map('intval',explode(',',$val['parentId']));
+                if (!empty($this->tree($arr, $parentIdList))) {
+                    $val['children'] = $this->tree($arr, $parentIdList);
+                }
+                $tree[] = $val;
+            }
+        }
+        return $tree;
+    }
+
+    public function editTree($arr, $pid, $id)
+    {
+        $tree = [];
+        foreach ($arr as $key => $val) {
+            if ($val['pid'] == $pid) {
+                if ($val['id'] == $id) {
+                } else {
+                    if (!empty($this->editTree($arr, $val['id'], $id))) {
+                        $val['children'] = $this->tree($arr, $val['id']);
                     }
                     $tree[] = $val;
                 }
@@ -35,5 +55,4 @@ class Tool
         }
         return $tree;
     }
-  
 }

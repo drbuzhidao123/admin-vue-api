@@ -17,7 +17,7 @@ class Menu extends BaseController
         $menuObj = new ModelMenu();
         $menuList = $menuObj->getMenuList($query)->toArray();
         $tool = new Tool();
-        $res = $tool->tree($menuList, 0);
+        $res = $tool->tree($menuList);
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
         }
@@ -26,7 +26,8 @@ class Menu extends BaseController
 
     public function getMenuListByUserId(Request $request)
     {
-        $userId = $request->param->userId;
+        $param = (array)($request->param);
+        $userId = $param['userId'];
         if (empty($userId)) {
             return show(config('status.error'), '传输数据为空', null);
         }
@@ -36,7 +37,7 @@ class Menu extends BaseController
         $role = $roleObj->getRoleByUserId($userId)->toArray();
         $permissionList = explode(",", $role["permissionList"]);
         $menuList = $menuObj->select($permissionList)->toArray();
-        $res = $tool->tree($menuList,0);
+        $res = $tool->tree($menuList);
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
         }

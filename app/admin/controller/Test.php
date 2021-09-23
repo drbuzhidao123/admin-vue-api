@@ -7,6 +7,8 @@ use app\common\controller\Tool;
 use app\common\model\Menu;
 use app\common\model\Role;
 use app\Request;
+use app\common\model\dept;
+use think\facade\Db;
 
 class Test extends BaseController
 {
@@ -50,4 +52,16 @@ class Test extends BaseController
     {
         return show(config('status.error'), '没有数据', 1);
     }
+
+    public function tree()
+    {
+        $id = 1;
+        Db::name('dept')
+    ->where('id',1)
+    ->exp('deptName','"deptName"123')
+    ->update();
+        //Db::execute("update dept set parentId='".$id."a' where parentId like'".$id."%'");
+        //Db::query("UPDATE `dept`  SET `parentId` = `parentId`$id  WHERE  `parentId` LIKE 'thinkphp%'");
+    }
+
 }

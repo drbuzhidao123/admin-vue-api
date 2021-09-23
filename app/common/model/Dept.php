@@ -31,7 +31,7 @@ class Dept extends Model
             'deptName' => $deptName
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->select();
 
         return $res;
        
