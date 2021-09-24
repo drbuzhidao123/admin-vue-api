@@ -5,7 +5,6 @@ namespace app\admin\controller;
 use app\admin\controller\Base;
 use app\common\controller\Tool;
 use app\common\model\dept as ModelDept;
-use think\facade\Db;
 use think\Request;
 
 class Dept extends Base
@@ -34,7 +33,6 @@ class Dept extends Base
         $param['createTime'] = date('Y-m-d h:i:s', time());
         $param['updateTime'] = date('Y-m-d h:i:s', time());
         $param['parentId'] = implode(',', $param['parentId']);
-        //return show(config('status.success'), '更新成功', $param);
         $deptObj = new ModelDept();
         $res = $deptObj->save($param);
         if (!$res) {
@@ -48,14 +46,19 @@ class Dept extends Base
         $deptObj = new ModelDept();
         $param = (array)($request->param);
         $param['parentId'] = implode(',', $param['parentId']);
-        $query1 = $param['parentId'];
-        $query2 = $param['id'];
-        //Db::execute("update dept set parentId='".$query1.",`parentId`'where parentId like '%".$query2."%'");
-        $res = $deptObj->updateById($param['id'],  $param);
-        if (!$res) {
-            return show(config('status.error'), '更新失败', $res);
+        $old = $deptObj->where('id', $param['id'])->find();
+        $save = $deptObj->updateById($param['id'],  $param);
+        if (!$save) {
+            return show(config('status.success'), '更新失败', $save);
+        }           
+        if ($param['parentId'] !== $old['parentId']) {
+            $deptObj
+        ->where('parentId', 'like', '%'.$param['id'].'%')
+        ->exp('parentId', 'replace(parentId,"'.$old['parentId'].'","'.$param['parentId'].'")')
+        ->update();//所有子级的parentId中原先部分更换成新的
         }
-        return show(config('status.success'), '更新成功', $res);
+            return show(config('status.success'), '更新成功', 200);
+     
     }
 
     public function delDept(Request $request)

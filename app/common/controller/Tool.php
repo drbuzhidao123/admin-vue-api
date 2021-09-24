@@ -18,18 +18,19 @@ class Tool
         return $tree;
     }
 
-    public function tree($arr, $parentId="")
+    public function tree($arr, $parentId='')
     {
         $tree = [];
         foreach ($arr as $key => $val) {
             if ($val['parentId'] == $parentId) {
                 if($val['parentId']==''){
-                    $parentIdList = $val['id'];
+                    $parentIdList = (string)$val['id'];
+                    $val['parentId'] = [null];
                 }else{
                     $parentIdList = $val['parentId'].','.$val['id'];
+                    
                 }
-                $val['parentId'] = array_map('intval',explode(',',$val['parentId']));
-                if (!empty($this->tree($arr, $parentIdList))) {
+                if ($this->tree($arr, $parentIdList)) {
                     $val['children'] = $this->tree($arr, $parentIdList);
                 }
                 $tree[] = $val;

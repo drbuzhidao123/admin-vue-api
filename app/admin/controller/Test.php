@@ -14,7 +14,7 @@ class Test extends BaseController
 {
     public function maketree()
     {
-        
+
         $MenuObj = new Menu();
         $tool = new Tool;
         $MenuList = $MenuObj->getMenuList(NULL)->toArray();
@@ -39,7 +39,7 @@ class Test extends BaseController
         $key = 'adminvuekey';
         // 加密数据 'AES-128-ECB' 可以通过openssl_get_cipher_methods()获取  
         $encrypt = openssl_encrypt($data, 'AES-128-ECB', $key, 0);
-        $decrypt = openssl_decrypt($encrypt, 'AES-128-ECB', $key, 0);  
+        $decrypt = openssl_decrypt($encrypt, 'AES-128-ECB', $key, 0);
         \dump(($decrypt));
     }
 
@@ -55,13 +55,14 @@ class Test extends BaseController
 
     public function tree()
     {
+        $deptObj = new Dept();
         $id = 1;
-        Db::name('dept')
-    ->where('id',1)
-    ->exp('deptName','"deptName"123')
-    ->update();
+        $query = "dept";
+        $deptObj
+            ->where('id', 4)
+            ->exp('parentId', 'replace(parentId,"5a","1234")')
+            ->update();
         //Db::execute("update dept set parentId='".$id."a' where parentId like'".$id."%'");
         //Db::query("UPDATE `dept`  SET `parentId` = `parentId`$id  WHERE  `parentId` LIKE 'thinkphp%'");
     }
-
 }
