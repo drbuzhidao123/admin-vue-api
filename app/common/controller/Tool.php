@@ -28,7 +28,7 @@ class Tool
                     $val['parentId'] = [null];
                 }else{
                     $parentIdList = $val['parentId'].','.$val['id'];
-                    
+                    $val['parentId'] = array_map('intval',explode(',',$val['parentId']));
                 }
                 if ($this->tree($arr, $parentIdList)) {
                     $val['children'] = $this->tree($arr, $parentIdList);
@@ -38,6 +38,8 @@ class Tool
         }
         return $tree;
     }
+
+ 
 
     public function editTree($arr, $pid, $id)
     {
