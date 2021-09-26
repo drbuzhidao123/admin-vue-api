@@ -53,6 +53,13 @@ class Test extends BaseController
         return show(config('status.error'), '没有数据', 1);
     }
 
+    public function ceshi()
+    {
+        $arr = '';
+        $res = array_map('intval',explode(',',$arr));
+        dump($res);
+    }
+
     public function tree()
     {
         $deptObj = new Dept();
