@@ -51,17 +51,15 @@ class Dept extends Base
         if (!$save) {
             return show(config('status.success'), '更新失败', $save);
         }           
-
             if($old['parentId']==''){
                 $res=$deptObj
                 ->where('parentId', 'like', '%'.$param['id'].'%')
                 ->exp('parentId', 'concat("'.$param['parentId'].',",parentId)')
                 ->update();//如果是顶级更新，所有子级的parentId前面加新的parentId
             }else{
-                return show(config('status.success'), '更新成功', $old);
                 $res=$deptObj
                 ->where('parentId', 'like', '%'.$param['id'].'%')
-                ->exp('parentId', 'replace(parentId,'.$old['parentId'].','.$param['parentId'].')')
+                ->exp('parentId', 'replace(parentId,"'.$old['parentId'].'","'.$param['parentId'].'")')
                 ->update();//所有子级的parentId中原先部分更换成新的
             }
         
