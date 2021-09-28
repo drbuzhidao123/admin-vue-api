@@ -10,19 +10,19 @@ class Role extends Model
         return $this->hasMany(User::class,'role');
     }
 
-    public function getRoleList($pagenum,$pagesize,$query)
+    public function getRoleList($pageNum,$pageSize,$query)
     {
-        if(empty($pagenum)&&empty($pagesize)){
+        if(empty($pageNum)&&empty($pageSize)){
              return false;
         }
 
         if(empty($query)){
-        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        $res = $this->limit(($pageNum-1)*$pageSize,$pageSize)->select()->toArray();;
         }else{
             $where=[
-                'title'=>$query
+                'roleName'=>$query
             ];
-        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        $res = $this->where($where)->limit(($pageNum-1)*$pageSize,$pageSize)->select()->toArray();;
         }
 
         return $res;
@@ -32,7 +32,7 @@ class Role extends Model
     public function getRoleByUserId($userId)
     {
         $where = User::where('id',$userId);
-        $role = Role::hasWhere("User",$where)->find();
+        $role = Role::hasWhere("User",$where)->find()->toArray();
         return $role;
     }
 
@@ -46,7 +46,7 @@ class Role extends Model
             'id' => $id
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
@@ -62,7 +62,7 @@ class Role extends Model
             'RoleName' => $RoleName
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
@@ -79,7 +79,7 @@ class Role extends Model
 
        $res = $this->where($where)->update($info);
        if($res){
-           $res = $this->where($where)->find();
+           $res = $this->where($where)->find()->toArray();
        }else{
            return false;
        }

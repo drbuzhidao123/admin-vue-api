@@ -3,24 +3,21 @@ namespace app\admin\controller;
 
 use app\admin\controller\Base;
 use app\common\model\Role as ModelRole;
-use think\facade\Request;
+use think\Request;
 
 class Role extends Base
 {
-    public function getRoleList()
+    public function getRoleList(Request $request)
     {
-        $pagenum =  \trim(request()->param('pagenum'));
-        $pagesize = \trim(request()->param('pagesize'));
-        $query = \trim(request()->param('query'));
-        if (empty($pagenum) || empty($pagesize)) {
-            return \show(config('status.error'), '传输数据为空', null);
+        $param = (array)($request->param);
+        if (empty($param['pageNum']) || empty($param['pageSize'])) {
+            return show(config('status.error'), '传输数据为空', null);
         }
-
         $roleObj = new ModelRole();
-        $roleList = $roleObj->getRoleList($pagenum, $pagesize, $query)->toArray();
-        $Total = $roleObj->getRoleTotal($query);
+        $roleList = $roleObj->getRoleList($param['pageNum'], $param['pageSize'],$param['query']);
+        $total = $roleObj->getRoleTotal($param['query']);
         $res["list"] = $roleList;
-        $res["total"] = $Total;
+        $res["total"] = $total;
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
         }

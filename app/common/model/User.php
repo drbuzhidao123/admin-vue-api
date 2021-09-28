@@ -13,12 +13,12 @@ class User extends Model
         }
 
         if(empty($query)){
-        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
         }else{
             $where=[
                 'title'=>$query
             ];
-        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
         }
 
         return $res;
@@ -35,7 +35,7 @@ class User extends Model
             'id' => $id
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
@@ -51,7 +51,7 @@ class User extends Model
             'userName' => $userName
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
@@ -68,7 +68,7 @@ class User extends Model
 
        $res = $this->where($where)->update($info);
        if($res){
-           $res = $this->where($where)->find();
+           $res = $this->where($where)->find()->toArray();
        }else{
            return false;
        }
@@ -98,7 +98,7 @@ class User extends Model
             'id' => $userid
         ];
 
-        $user = $this->where($where)->find();
+        $user = $this->where($where)->find()->toArray();
         $user->status = $status; 
         $res = $user->save();
         return $res;
@@ -114,7 +114,7 @@ class User extends Model
         $where = [
             'id' => $userid
         ];
-        $admin=$this->where($where)->find();
+        $admin=$this->where($where)->find()->toArray();
         if($user['password']==''){ 
            $admin->userName=$user['userName'];
            $admin->updated=date("Y-m-d h:i:s",time());

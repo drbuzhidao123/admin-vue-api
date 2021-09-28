@@ -11,8 +11,9 @@ class Login extends BaseController
 {
     public function check(Request $request)
     {
-        $userName = $request->param->userName;
-        $password = $request->param->password;
+        $param = (array)($request->param);
+        $userName = trim($param['userName']);
+        $password = trim($param['password']);
         if (empty($userName) || empty($password)) {
             return show(config('status.error'), '用户名或密码为空', null);
         }

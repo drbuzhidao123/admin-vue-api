@@ -16,7 +16,7 @@ class User extends Base
             return show(config('status.error'), '传输数据为空', null);
         }
         $userObj = new ModelUser();
-        $userList = $userObj->getUserList($pagenum, $pagesize, $query)->toArray();
+        $userList = $userObj->getUserList($pagenum, $pagesize, $query);
         $Total = $userObj->getUserTotal($query);
         $res["list"] = $userList;
         $res["total"] = $Total;
@@ -43,7 +43,7 @@ class User extends Base
             return \show(config('status.error'), '传输数据为空', null);
         }
         $userObj = new ModelUser();
-        $res =$userObj->getUserById($userId)->toArray();
+        $res =$userObj->getUserById($userId);
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
         }

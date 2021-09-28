@@ -9,21 +9,16 @@ class Menu extends Model
     public function getMenuList($query)
     {
         if(empty($query)){
-        $res = $this->select();
+        $res = $this->select()->toArray();
         }else{
             $where=[
-                'title'=>$query
+                'menuName'=>$query
             ];
-        $res = $this->where($where)->select();
+        $res = $this->where($where)->select()->toArray();
         }
 
         return $res;
        
-    }
-
-    public function getMenuListByUserId($userId)
-    {
-         
     }
 
     public function getMenuById($id)
@@ -36,40 +31,40 @@ class Menu extends Model
             'id' => $id
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
     }
 
-    public function getMenuByMenuName($MenuName)
+    public function getMenuByMenuName($menuName)
     {
-        if(empty($MenuName)){
+        if(empty($menuName)){
              return false;
         }
 
         $where = [
-            'MenuName' => $MenuName
+            'menuName' => $menuName
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
     }
 
-    public function updateMenuByMenuName($MenuName,$info){
-        if(empty($MenuName)){
+    public function updateMenuByMenuName($menuName,$info){
+        if(empty($menuName)){
             return false;
        }
 
        $where = [
-        'MenuName' => $MenuName
+        'menuName' => $menuName
     ];
 
        $res = $this->where($where)->update($info);
        if($res){
-           $res = $this->where($where)->find();
+           $res = $this->where($where)->find()->toArray();
        }else{
            return false;
        }
@@ -82,52 +77,26 @@ class Menu extends Model
             $res = $this->select()->count();
             }else{
                 $where=[
-                    'MenuName'=>$query
+                    'menuName'=>$query
                 ];
             $res = $this->where($where)->select()->count();
             }
         return $res;
     }
 
-    public function updateStatusById($Menuid,$status)
+    public function updateStatusById($menuid,$status)
     {
-        if(empty($Menuid)){
+        if(empty($menuid)){
          return false;
         }
 
         $where = [
-            'id' => $Menuid
+            'id' => $menuid
         ];
 
         $Menu = $this->where($where)->find();
         $Menu->status = $status; 
         $res = $Menu->save();
-        return $res;
-        
-    }
-
-    public function updateById($Menuid,$Menu)
-    {
-        if(empty($Menuid)){
-         return false;
-        }
-
-        $where = [
-            'id' => $Menuid
-        ];
-        $admin=$this->where($where)->find();
-        if($Menu['password']==''){ 
-           $admin->MenuName=$Menu['MenuName'];
-           $admin->updated=date("Y-m-d h:i:s",time());
-           $admin->mobile=$Menu['mobile'];
-        }else{
-            $admin->MenuName=$Menu['MenuName'];
-            $admin->password=\passwordMd5($Menu['password']);
-            $admin->updated=date("Y-m-d h:i:s",time());
-            $admin->mobile=$Menu['mobile'];
-        }
-
-        $res = $admin->save();
         return $res;
         
     }

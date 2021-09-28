@@ -15,7 +15,7 @@ class Dept extends Model
             'id' => $id
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
@@ -31,7 +31,7 @@ class Dept extends Model
             'deptName' => $deptName
         ];
 
-        $res = $this->where($where)->select();
+        $res = $this->where($where)->select()->toArray();
 
         return $res;
        
@@ -48,7 +48,7 @@ class Dept extends Model
 
        $res = $this->where($where)->update($info);
        if($res){
-           $res = $this->where($where)->find();
+           $res = $this->where($where)->find()->toArray();
        }else{
            return false;
        }

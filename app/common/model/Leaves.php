@@ -13,12 +13,12 @@ class Leaves extends Model
         }
 
         if(empty($query)){
-        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
         }else{
             $where=[
                 'title'=>$query
             ];
-        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select();
+        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
         }
 
         return $res;
@@ -35,7 +35,7 @@ class Leaves extends Model
             'id' => $id
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
@@ -51,7 +51,7 @@ class Leaves extends Model
             'LeavesName' => $LeavesName
         ];
 
-        $res = $this->where($where)->find();
+        $res = $this->where($where)->find()->toArray();
 
         return $res;
        
@@ -68,7 +68,7 @@ class Leaves extends Model
 
        $res = $this->where($where)->update($info);
        if($res){
-           $res = $this->where($where)->find();
+           $res = $this->where($where)->find()->toArray();
        }else{
            return false;
        }
