@@ -24,61 +24,47 @@ class Role extends Base
         return show(config('status.success'), '查询数据成功', $res);
     }
 
-    public function getRole()
+    public function addRole(Request $request)
     {
-        $roleId =  \trim(request()->param('roleId'));
-        if (empty($roleId)) {
-            return \show(config('status.error'), '传输数据为空', null);
-        }
+        $param = (array)($request->param);
+        $param['createTime'] = date('Y-m-d h:i:s', time());
+        $param['updateTime'] = date('Y-m-d h:i:s', time());
         $roleObj = new ModelRole();
-        $res =$roleObj->getRoleById($roleId)->toArray();
-        if (empty($res)) {
-            return show(config('status.error'), '没有数据', $res);
-        }
-        return show(config('status.success'), '查询数据成功', $res);
-    }
-
-    public function changeStatus()
-    {
-        $roleId = trim(request()->param('roleId'));
-        $status = trim(request()->param('status'));
-        $roleObj = new ModelRole();
-        $res = $roleObj->updateStatusByid($roleId, $status); //返回0或1
-        if (!$res || empty($res)) {
-            return show(config('status.error'), '更新失败', $res);
-        }
-        return show(config('status.success'), '更新成功', $res);
-    }
-
-
-    public function add()
-    {
-        $role = Request::param();
-        $roleObj = new ModelRole();
-        $role['password'] = passwordMd5($role['password']);
-        $res = $roleObj->save($role); //返回boolse值
+        $res =  $roleObj->save($param);
         if (!$res) {
             return show(config('status.error'), '更新失败', $res);
         }
         return show(config('status.success'), '更新成功', $res);
     }
 
-    public function edit()
+    public function editRole(Request $request)
     {
-        $role = Request::param();
+        $param = (array)($request->param);
+        $param['updateTime'] = date('Y-m-d h:i:s', time());
         $roleObj = new ModelRole();
-        $res = $roleObj->updateById($role['id'], $role);
+        $res = $roleObj->update($param);
         if (!$res) {
             return show(config('status.error'), '更新失败', $res);
         }
         return show(config('status.success'), '更新成功', $res);
     }
 
-    public function remove()
+    public function updatePermission(Request $request)
     {
-        $roleId = Request::param('roleId');
+        $param = (array)($request->param);
         $roleObj = new ModelRole();
-        $res = $roleObj->delete($roleId);//单个或批量删除
+        $res = $roleObj->save($param);
+        if (!$res) {
+            return show(config('status.error'), '更新失败', $res);
+        }
+        return show(config('status.success'), '更新成功', $res);
+    }
+
+    public function delRole(Request $request)
+    {
+        $param = (array)($request->param);
+        $roleObj = new ModelRole();
+        $res = $roleObj->where('id',$param['id'])->delete();
         if (empty($res)) {
             return show(config('status.error'), '删除失败', $res);
         }

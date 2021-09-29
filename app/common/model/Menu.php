@@ -31,8 +31,7 @@ class Menu extends Model
             'id' => $id
         ];
 
-        $res = $this->where($where)->find()->toArray();
-
+        $res = $this->where($where)->find();
         return $res;
        
     }
@@ -47,7 +46,7 @@ class Menu extends Model
             'menuName' => $menuName
         ];
 
-        $res = $this->where($where)->find()->toArray();
+        $res = $this->where($where)->find();
 
         return $res;
        
@@ -64,7 +63,7 @@ class Menu extends Model
 
        $res = $this->where($where)->update($info);
        if($res){
-           $res = $this->where($where)->find()->toArray();
+           $res = $this->where($where)->find();
        }else{
            return false;
        }

@@ -51,7 +51,7 @@ class User extends Model
             'userName' => $userName
         ];
 
-        $res = $this->where($where)->find()->toArray();
+        $res = $this->where($where)->find();
 
         return $res;
        

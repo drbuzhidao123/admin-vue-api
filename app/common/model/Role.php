@@ -32,7 +32,7 @@ class Role extends Model
     public function getRoleByUserId($userId)
     {
         $where = User::where('id',$userId);
-        $role = Role::hasWhere("User",$where)->find()->toArray();
+        $role = Role::hasWhere("User",$where)->find();
         return $role;
     }
 
@@ -46,7 +46,7 @@ class Role extends Model
             'id' => $id
         ];
 
-        $res = $this->where($where)->find()->toArray();
+        $res = $this->where($where)->find();
 
         return $res;
        
@@ -62,7 +62,7 @@ class Role extends Model
             'RoleName' => $RoleName
         ];
 
-        $res = $this->where($where)->find()->toArray();
+        $res = $this->where($where)->find();
 
         return $res;
        
@@ -79,7 +79,7 @@ class Role extends Model
 
        $res = $this->where($where)->update($info);
        if($res){
-           $res = $this->where($where)->find()->toArray();
+           $res = $this->where($where)->find();
        }else{
            return false;
        }
@@ -97,49 +97,6 @@ class Role extends Model
             $res = $this->where($where)->select()->count();
             }
         return $res;
-    }
-
-    public function updateStatusById($Roleid,$status)
-    {
-        if(empty($Roleid)){
-         return false;
-        }
-
-        $where = [
-            'id' => $Roleid
-        ];
-
-        $Role = $this->where($where)->find();
-        $Role->status = $status; 
-        $res = $Role->save();
-        return $res;
-        
-    }
-
-    public function updateById($Roleid,$Role)
-    {
-        if(empty($Roleid)){
-         return false;
-        }
-
-        $where = [
-            'id' => $Roleid
-        ];
-        $admin=$this->where($where)->find();
-        if($Role['password']==''){ 
-           $admin->RoleName=$Role['RoleName'];
-           $admin->updated=date("Y-m-d h:i:s",time());
-           $admin->mobile=$Role['mobile'];
-        }else{
-            $admin->RoleName=$Role['RoleName'];
-            $admin->password=\passwordMd5($Role['password']);
-            $admin->updated=date("Y-m-d h:i:s",time());
-            $admin->mobile=$Role['mobile'];
-        }
-
-        $res = $admin->save();
-        return $res;
-        
     }
     
 }
