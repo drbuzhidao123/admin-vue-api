@@ -53,7 +53,10 @@ class Role extends Base
     {
         $param = (array)($request->param);
         $roleObj = new ModelRole();
-        $res = $roleObj->save($param);
+        $param['permissionList'] = implode(',', $param['permissionList']);
+        $param['checkedKeys'] = implode(',', $param['checkedKeys']);
+        $param['halfCheckedKeys'] = implode(',', $param['halfCheckedKeys']);
+        $res = $roleObj->update($param);
         if (!$res) {
             return show(config('status.error'), '更新失败', $res);
         }

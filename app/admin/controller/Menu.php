@@ -36,7 +36,7 @@ class Menu extends BaseController
         $menuObj = new ModelMenu();
         $tool = new Tool();
         $role = $roleObj->getRoleByUserId($userId);
-        $permissionList = explode(",", $role["permissionList"]);
+        $permissionList = array_merge(explode(",", $role["checkedKeys"]),explode(",", $role["halfCheckedKeys"]));
         $menuList = $menuObj->select($permissionList)->toArray();
         $res = $tool->tree($menuList);
         if (empty($res)) {
@@ -89,6 +89,10 @@ class Menu extends BaseController
     {
         $param = (array)($request->param);
         $menuObj = new ModelMenu();
+        $permissionId1= $menuObj->where('parentId','like', '%' . $param['id'] . '%')->field('id')->select();
+        $permissionId2= $menuObj->where('id',$param['id'])->find();
+        array_merge($permissionId1,$permissionId2);
+        //return show(config('status.success'), '删除成功', $permissionId1[0]['id']);   
         $res1 = $menuObj::where('parentId', 'like', '%' . $param['id'] . '%')->delete(); //批量删除
         $res2 = $menuObj::where('id', '=', $param['id'])->delete();
         return show(config('status.success'), '删除成功', 200);
