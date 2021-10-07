@@ -89,10 +89,8 @@ class Menu extends BaseController
     {
         $param = (array)($request->param);
         $menuObj = new ModelMenu();
-        $permissionId1= $menuObj->where('parentId','like', '%' . $param['id'] . '%')->field('id')->select();
-        $permissionId2= $menuObj->where('id',$param['id'])->find();
-        array_merge($permissionId1,$permissionId2);
-        //return show(config('status.success'), '删除成功', $permissionId1[0]['id']);   
+        //$permissionId1 = $menuObj->where('parentId','like', '%' . $param['id'] . '%')->field('id')->select()->toArray();
+        //$permissionId2 = $menuObj->where('id',$param['id'])->find();
         $res1 = $menuObj::where('parentId', 'like', '%' . $param['id'] . '%')->delete(); //批量删除
         $res2 = $menuObj::where('id', '=', $param['id'])->delete();
         return show(config('status.success'), '删除成功', 200);
