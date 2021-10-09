@@ -9,15 +9,13 @@ class User extends Base
 {
     public function getUserList(Request $request)
     {
-        $pagenum =  trim($request->param->pagenum);
-        $pagesize = trim($request->param->pagesize);
-        $query = trim($request->param->query);
-        if (empty($pagenum) || empty($pagesize)) {
+        $param = (array)($request->param);
+        if (empty($param['pageNum']) || empty($param['pageSize'])) {
             return show(config('status.error'), '传输数据为空', null);
         }
         $userObj = new ModelUser();
-        $userList = $userObj->getUserList($pagenum, $pagesize, $query);
-        $Total = $userObj->getUserTotal($query);
+        $userList = $userObj->getUserList($param['pageNum'], $param['pageSize'],$param['query']);
+        $Total = $userObj->getUserTotal($param['query']);
         $res["list"] = $userList;
         $res["total"] = $Total;
         if (empty($res)) {
