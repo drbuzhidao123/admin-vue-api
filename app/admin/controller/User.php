@@ -3,6 +3,7 @@ namespace app\admin\controller;
 
 use app\admin\controller\Base;
 use app\common\model\User as ModelUser;
+use think\facade\Db;
 use think\Request;
 
 class User extends Base
@@ -34,9 +35,10 @@ class User extends Base
         return show(config('status.success'), '查询数据成功', $res);
     }
 
-    public function getUser()
+    public function getUser(Request $request)
     {
-        $userId =  \trim(request()->param('userId'));
+        $param = (array)($request->param);
+        $userId =  \trim($param('userId'));
         if (empty($userId)) {
             return \show(config('status.error'), '传输数据为空', null);
         }
@@ -48,47 +50,66 @@ class User extends Base
         return show(config('status.success'), '查询数据成功', $res);
     }
 
-    public function changeStatus()
+    public function changeStatus(Request $request)
     {
-        $userId = trim(request()->param('userId'));
-        $status = trim(request()->param('status'));
+        $param = (array)($request->param);
+        $userId = trim($param['id']);
+        $status = trim($param['status']);
         $userObj = new ModelUser();
-        $res = $userObj->updateStatusByid($userId, $status); //返回0或1
-        if (!$res || empty($res)) {
+        $res = $userObj->updateStatusByid($userId, $status); 
+        if (!$res) {
             return show(config('status.error'), '更新失败', $res);
         }
         return show(config('status.success'), '更新成功', $res);
     }
-
 
     public function addUser(Request $request)
     {
-        $user = $request->param;
+        $param = (array)($request->param);
         $userObj = new ModelUser();
-        $user->password = passwordMd5($user->password);
-        $res = $userObj->save($user); //返回boolse值
+        $param['password'] = passwordMd5($param['password']);
+        $param['deptId'] = implode(',', $param['deptId']);
+        $param['createTime'] = date('Y-m-d h:i:s', time());
+        $param['updateTime'] = date('Y-m-d h:i:s', time());
+        $res = $userObj->save($param);
         if (!$res) {
             return show(config('status.error'), '更新失败', $res);
         }
         return show(config('status.success'), '更新成功', $res);
     }
 
-    public function edit()
+    public function editUser(Request $request)
     {
-        $user = Request::param();
+        $param = (array)($request->param);
         $userObj = new ModelUser();
-        $res = $userObj->updateById($user['id'], $user);
+        $param['deptId'] = implode(',', $param['deptId']);
+        $param['updateTime'] = date('Y-m-d h:i:s', time());
+        if(!empty($param['password'])){
+            $param['password'] = passwordMd5($param['password']); 
+        }
+        $res = $userObj->update($param);
         if (!$res) {
             return show(config('status.error'), '更新失败', $res);
         }
         return show(config('status.success'), '更新成功', $res);
     }
 
-    public function remove()
+    public function delUser(Request $request)
     {
-        $userId = Request::param('userId');
+        $param = (array)($request->param);
+        $param['id'] = trim($param['id']);
         $userObj = new ModelUser();
-        $res = $userObj->delete($userId);//单个或批量删除
+        $res = $userObj->where('id',$param['id'])->delete();
+        if (empty($res)) {
+            return show(config('status.error'), '删除失败', $res);
+        }
+        return show(config('status.success'), '删除成功', $res);
+    }
+
+    public function delManyUser(Request $request)
+    {
+        $param = (array)($request->param);
+        $res = Db::table('user')->delete($param['userIds']);
         if (empty($res)) {
             return show(config('status.error'), '删除失败', $res);
         }

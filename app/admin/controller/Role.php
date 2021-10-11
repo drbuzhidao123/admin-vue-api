@@ -24,6 +24,16 @@ class Role extends Base
         return show(config('status.success'), '查询数据成功', $res);
     }
 
+    public function getAllRoleList()
+    {
+        $roleObj = new ModelRole();
+        $res = $roleObj->select()->toArray();
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
+    }
+
     public function addRole(Request $request)
     {
         $param = (array)($request->param);

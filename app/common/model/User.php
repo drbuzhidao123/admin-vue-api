@@ -13,12 +13,12 @@ class User extends Model
         }
 
         if(empty($query)){
-        $res = $this->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
+        $res = $this->alias('u')->leftjoin('role r','u.role=r.id')->field('u.id,u.userName,u.userEmail,u.mobile,u.sex,u.deptId,u.job,u.status,u.role,u.createTime,u.updateTime,r.roleName')->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
         }else{
             $where=[
-                'title'=>$query
+                'u.userName'=>$query,
             ];
-        $res = $this->where($where)->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
+        $res = $this->alias('u')->leftjoin('role r','u.role=r.id')->where($where)->field('u.id,u.userName,u.userEmail,u.mobile,u.sex,u.deptId,u.job,u.status,u.role,u.createTime,u.updateTime,r.roleName')->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
         }
 
         return $res;
@@ -88,45 +88,35 @@ class User extends Model
         return $res;
     }
 
-    public function updateStatusById($userid,$status)
+    public function updateStatusById($userId,$status)
     {
-        if(empty($userid)){
+        if(empty($userId)){
          return false;
         }
 
         $where = [
-            'id' => $userid
+            'id' => $userId
         ];
 
-        $user = $this->where($where)->find()->toArray();
+        $user = $this->where($where)->find();
         $user->status = $status; 
         $res = $user->save();
         return $res;
         
     }
 
-    public function updateById($userid,$user)
+    public function updateById($userId,$param)
     {
-        if(empty($userid)){
+        if(empty($userId)){
          return false;
         }
 
         $where = [
-            'id' => $userid
+            'id' => $userId
         ];
-        $admin=$this->where($where)->find()->toArray();
-        if($user['password']==''){ 
-           $admin->userName=$user['userName'];
-           $admin->updated=date("Y-m-d h:i:s",time());
-           $admin->mobile=$user['mobile'];
-        }else{
-            $admin->userName=$user['userName'];
-            $admin->password=\passwordMd5($user['password']);
-            $admin->updated=date("Y-m-d h:i:s",time());
-            $admin->mobile=$user['mobile'];
-        }
-
-        $res = $admin->save();
+        $user=$this->where($where)->find();
+        $param['updateTime'] = date('Y-m-d h:i:s', time());
+        $res=$user->where($where)->update($param);
         return $res;
         
     }

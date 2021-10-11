@@ -26,6 +26,19 @@ class Dept extends Base
         return show(config('status.success'), '查询数据成功', $res);
     }
 
+    public function getAllDeptList(Request $request)
+    {
+        $param = (array)($request->param);
+        $deptObj = new ModelDept();
+        $tool = new Tool();
+            $res = $deptObj->select()->toArray();
+            $res = $tool->tree($res);
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
+    }
+
     public function addDept(Request $request)
     {
         $param = (array)($request->param);
