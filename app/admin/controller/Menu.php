@@ -25,6 +25,20 @@ class Menu extends BaseController
         return show(config('status.success'), '查询数据成功', $res);
     }
 
+    public function getRoleMenuList(Request $request)
+    {
+        $param = (array)($request->param);
+        $menuObj = new ModelMenu();
+        $tool = new Tool();
+        $res = $menuObj->getRoleMenuList();
+        $res = $tool->tree($res);
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
+    }
+    
+    //获取用户菜单的权限列表
     public function getMenuListByUserId(Request $request)
     {
         $param = (array)($request->param);
@@ -37,7 +51,7 @@ class Menu extends BaseController
         $tool = new Tool();
         $role = $roleObj->getRoleByUserId($userId);
         $permissionList = array_merge(explode(",", $role["checkedKeys"]),explode(",", $role["halfCheckedKeys"]));
-        $menuList = $menuObj->select($permissionList)->toArray();
+        $menuList = $menuObj->where(["status"=>1])->select($permissionList)->toArray();
         $res = $tool->tree($menuList);
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
@@ -95,4 +109,17 @@ class Menu extends BaseController
         $res2 = $menuObj::where('id', '=', $param['id'])->delete();
         return show(config('status.success'), '删除成功', 200);
     }
+
+
+    public function getMenuCount(Request $request)
+    {
+        $param = (array)($request->param);
+        $menuObj = new ModelMenu();
+        $res = $menuObj->getMenuTotal(null);
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
+    }
+
 }

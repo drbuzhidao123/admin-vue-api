@@ -13,12 +13,12 @@ class User extends Model
         }
 
         if(empty($query)){
-        $res = $this->alias('u')->leftjoin('role r','u.role=r.id')->field('u.id,u.userName,u.userEmail,u.mobile,u.sex,u.deptId,u.job,u.status,u.role,u.createTime,u.updateTime,r.roleName')->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
+        $res = $this->alias('u')->leftjoin('role r','u.role=r.id')->field('u.id,u.realName,u.userName,u.userEmail,u.mobile,u.sex,u.deptId,u.job,u.status,u.role,u.createTime,u.updateTime,r.roleName')->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
         }else{
             $where=[
                 'u.userName'=>$query,
             ];
-        $res = $this->alias('u')->leftjoin('role r','u.role=r.id')->where($where)->field('u.id,u.userName,u.userEmail,u.mobile,u.sex,u.deptId,u.job,u.status,u.role,u.createTime,u.updateTime,r.roleName')->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
+        $res = $this->alias('u')->leftjoin('role r','u.role=r.id')->where($where)->field('u.id,u.realName,u.userName,u.userEmail,u.mobile,u.sex,u.deptId,u.job,u.status,u.role,u.createTime,u.updateTime,r.roleName')->limit(($pagenum-1)*$pagesize,$pagesize)->select()->toArray();
         }
 
         return $res;
@@ -48,7 +48,8 @@ class User extends Model
         }
 
         $where = [
-            'userName' => $userName
+            'userName' => $userName,
+            'status' => 1
         ];
 
         $res = $this->where($where)->find();

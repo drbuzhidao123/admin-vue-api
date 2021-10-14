@@ -63,6 +63,7 @@ class Role extends Base
     {
         $param = (array)($request->param);
         $roleObj = new ModelRole();
+        $param['updateTime'] = date('Y-m-d h:i:s', time());
         $param['permissionList'] = implode(',', $param['permissionList']);
         $param['checkedKeys'] = implode(',', $param['checkedKeys']);
         $param['halfCheckedKeys'] = implode(',', $param['halfCheckedKeys']);
@@ -82,6 +83,28 @@ class Role extends Base
             return show(config('status.error'), '删除失败', $res);
         }
         return show(config('status.success'), '删除成功', $res);
+    }
+
+    public function getRoleCount(Request $request)
+    {
+        $param = (array)($request->param);
+        $roleObj = new ModelRole();
+        $res = $roleObj->getRoleTotal(null);
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
+    }
+
+    public function getRoleName(Request $request)
+    {
+        $param = (array)($request->param);
+        $roleObj = new ModelRole();
+        $res = $roleObj->where(['id'=>$param['roleId']])->field('roleName')->find();
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
     }
 
 

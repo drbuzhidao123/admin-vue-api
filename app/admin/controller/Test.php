@@ -30,6 +30,7 @@ class Test extends BaseController
         $role = $roleObj->getRoleByUserId($userId)->toArray();
         \dump($role);
     }
+    
 
     public function AES()
     {
@@ -55,9 +56,8 @@ class Test extends BaseController
 
     public function ceshi()
     {
-        $arr = '';
-        $res = array_map('intval',explode(',',$arr));
-        dump($res);
+        $res = 123;
+        return show(config('status.success'), '成功', $res);
     }
 
     public function tree()

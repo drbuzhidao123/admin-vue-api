@@ -2,7 +2,6 @@
 
 
 namespace app\admin\middleware;
-
 class Before
 {
     /**

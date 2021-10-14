@@ -31,8 +31,8 @@ class Dept extends Base
         $param = (array)($request->param);
         $deptObj = new ModelDept();
         $tool = new Tool();
-            $res = $deptObj->select()->toArray();
-            $res = $tool->tree($res);
+        $res = $deptObj->select()->toArray();
+        $res = $tool->tree($res);
         if (empty($res)) {
             return show(config('status.error'), '没有数据', $res);
         }
@@ -87,5 +87,16 @@ class Dept extends Base
         $res1 = $deptObj::where('parentId', 'like', '%' . $param['id'] . '%')->delete(); //批量删除
         $res2 = $deptObj::where('id', '=', $param['id'])->delete();
         return show(config('status.success'), '删除成功', true);
+    }
+
+    public function getDeptCount(Request $request)
+    {
+        $param = (array)($request->param);
+        $deptObj = new ModelDept();
+        $res = $deptObj->getDeptTotal(null);
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
     }
 }

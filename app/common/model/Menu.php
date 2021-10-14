@@ -21,6 +21,18 @@ class Menu extends Model
        
     }
 
+    public function getRoleMenuList()
+    {
+        $where=[
+            'status'=>1
+        ];
+        $res = $this->where($where)->select()->toArray();
+     
+
+        return $res;
+       
+    }
+
     public function getMenuById($id)
     {
         if(empty($id)){

@@ -10,5 +10,6 @@ return [
     'action_not_found' => -4,
     'controller_not_found' => -5,
     'token_out' => 40001, //token过期或没token
-    'nosku' => -6
+    'nosku' => -6,
+    'not_ajax'=>4002,
 ];

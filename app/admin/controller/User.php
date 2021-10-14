@@ -116,5 +116,16 @@ class User extends Base
         return show(config('status.success'), '删除成功', $res);
     }
 
+    public function getUserCount(Request $request)
+    {
+        $param = (array)($request->param);
+        $userObj = new ModelUser();
+        $res = $userObj->getUserTotal(null);
+        if (empty($res)) {
+            return show(config('status.error'), '没有数据', $res);
+        }
+        return show(config('status.success'), '查询数据成功', $res);
+    }
+
 
 }
