@@ -4,11 +4,11 @@ namespace app\admin\controller;
 
 use app\BaseController;
 use app\common\controller\Tool;
+use app\common\lib\IdWork;
 use app\common\model\Menu;
 use app\common\model\Role;
 use app\Request;
 use app\common\model\dept;
-use think\facade\Db;
 
 class Test extends BaseController
 {
@@ -56,8 +56,10 @@ class Test extends BaseController
 
     public function ceshi()
     {
-        $res = 123;
-        return show(config('status.success'), '成功', $res);
+        $work_id = rand(1, 1023);//随机数
+        $order_sn = IdWork::getInstance()->setWorkId($work_id)->nextId();//雪花算法生成唯一订单编号
+        $order_sn = (string)$order_sn;//把订单号数字转化成字符串，因为数据表里的数据类型是字符串
+        \dump($order_sn);
     }
 
     public function tree()

@@ -67,6 +67,10 @@ class User extends Base
     {
         $param = (array)($request->param);
         $userObj = new ModelUser();
+        $hasUser=$userObj->where(['userName'=>$param['userName']])->find();
+        if(!empty($hasUser)){
+            return show(config('status.error'), '用户名已经存在', null);
+        }
         $param['password'] = passwordMd5($param['password']);
         $param['deptId'] = implode(',', $param['deptId']);
         $param['createTime'] = date('Y-m-d h:i:s', time());
