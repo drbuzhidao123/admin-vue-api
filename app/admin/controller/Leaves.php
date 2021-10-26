@@ -123,7 +123,7 @@ class Leaves extends Base
             }else{
                 //最后一个节点
                 $query['applyState']=4;
-                $query['curAuditUserName'] = ""
+                $query['curAuditUserName'] = "";
             }
         }
         $log = ['userName'=>$param['approveUser'],'remark'=>$param['remark']];
@@ -144,10 +144,18 @@ class Leaves extends Base
         $where = [
             'curAuditUserName' => $param['userName']
         ];
-        $res = $leavesObj->where($where)->count();
-        if (empty($res)) {
-            return show(config('status.error'), '没有数据', $res);
-        }
+        $res = $leavesObj->where($where)->count();  
         return show(config('status.success'), '查询数据成功', $res);
     }
+     //申请数量
+     public function leavesCount(Request $request)
+     {
+         $param = (array)($request->param);
+         $leavesObj = new ModelLeaves();
+         $where = [
+             'applyUser' => $param['applyUser']
+         ];
+         $res = $leavesObj->where($where)->count();  
+         return show(config('status.success'), '查询数据成功', $res);
+     }
 }
