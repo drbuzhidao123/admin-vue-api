@@ -3,7 +3,7 @@
 namespace app\admin\controller;
 
 use app\BaseController;
-use app\common\model\user;
+use app\common\model\User;
 use app\common\controller\JwtTool;
 use think\Request;
 

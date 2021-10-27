@@ -4,7 +4,7 @@ namespace app\admin\controller;
 
 use app\admin\controller\Base;
 use app\common\controller\Tool;
-use app\common\model\dept as ModelDept;
+use app\common\model\Dept as ModelDept;
 use think\Request;
 
 class Dept extends Base

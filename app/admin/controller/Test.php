@@ -8,7 +8,7 @@ use app\common\lib\IdWork;
 use app\common\model\Menu;
 use app\common\model\Role;
 use app\Request;
-use app\common\model\dept;
+use app\common\model\Dept;
 
 class Test extends BaseController
 {
