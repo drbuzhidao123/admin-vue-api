@@ -6,12 +6,16 @@ use app\BaseController;
 use app\common\model\User;
 use app\common\controller\JwtTool;
 use think\Request;
+use ric\captcha\facade\CaptchaApi;
 
 class Login extends BaseController
 {
     public function check(Request $request)
     {
         $param = (array)($request->param);
+        if (!CaptchaApi::check($param['captcha'],$param['key'])) {
+            return show(config('status.captcha_out'), '验证失败！验证码有误！', null);
+        }
         $userName = trim($param['userName']);
         $password = trim($param['password']);
         if (empty($userName) || empty($password)) {

@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 use app\BaseController;
 use PclZip;
+use ric\captcha\facade\CaptchaApi;
 
 class Tool extends BaseController
 {
@@ -29,6 +30,15 @@ class Tool extends BaseController
         header("Pragma: no-cache"); 
         readfile($filepath);         
         exit ;
+    }
+
+    /**
+     * 获取验证码
+     */
+    public function getCaptcha()
+    {
+        $data = CaptchaApi::create();
+        return show(config('status.success'), '获取验证码成功！', $data);
     }
 
 

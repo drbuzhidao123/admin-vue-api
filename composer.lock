@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc0cbc194b5cd0b35ca922c9091fff1e",
+    "content-hash": "8a1b307b9368081dbebf0a3327c8f017",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -505,6 +505,49 @@
             "time": "2017-10-23T01:57:42+00:00"
         },
         {
+            "name": "ric/thinkphp6-captcha",
+            "version": "v1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://gitee.com/tojeekup/thinkphp6-captcha.git",
+                "reference": "da7a7a07bacc529b59899b2753131669531e6466"
+            },
+            "require": {
+                "topthink/framework": "^6.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "think": {
+                    "services": [
+                        "ric\\captcha\\CaptchaService"
+                    ],
+                    "config": {
+                        "captcha": "src/config.php"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ric\\captcha\\": "src/"
+                },
+                "files": [
+                    "src/helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "ric",
+                    "email": "596868636@qq.com"
+                }
+            ],
+            "description": "think6验证码(图片、短信)支持base64api友好化",
+            "time": "2020-06-12T06:40:34+00:00"
+        },
+        {
             "name": "topthink/framework",
             "version": "v6.0.7",
             "source": {
@@ -568,59 +611,6 @@
                 "source": "https://github.com/top-think/framework/tree/v6.0.7"
             },
             "time": "2021-01-25T14:48:29+00:00"
-        },
-        {
-            "name": "topthink/think-captcha",
-            "version": "v3.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/top-think/think-captcha.git",
-                "reference": "1eef3717c1bcf4f5bbe2d1a1c704011d330a8b55"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-captcha/zipball/1eef3717c1bcf4f5bbe2d1a1c704011d330a8b55",
-                "reference": "1eef3717c1bcf4f5bbe2d1a1c704011d330a8b55",
-                "shasum": ""
-            },
-            "require": {
-                "topthink/framework": "^6.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "think": {
-                    "services": [
-                        "think\\captcha\\CaptchaService"
-                    ],
-                    "config": {
-                        "captcha": "src/config.php"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "think\\captcha\\": "src/"
-                },
-                "files": [
-                    "src/helper.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "yunwuxin",
-                    "email": "448901948@qq.com"
-                }
-            ],
-            "description": "captcha package for thinkphp",
-            "support": {
-                "issues": "https://github.com/top-think/think-captcha/issues",
-                "source": "https://github.com/top-think/think-captcha/tree/v3.0.3"
-            },
-            "time": "2020-05-19T10:55:45+00:00"
         },
         {
             "name": "topthink/think-helper",
